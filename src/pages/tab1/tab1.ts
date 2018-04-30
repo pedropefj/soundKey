@@ -1,8 +1,9 @@
 import { LoginServiceProvider } from './../../providers/login-service/login-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Platform, App } from 'ionic-angular';
 import { Media, MediaObject } from '@ionic-native/media';
 import { File } from '@ionic-native/file';
+import { LoginPage } from '../login/login';
 @IonicPage()
 @Component({
   selector: 'page-tab1',
@@ -11,12 +12,13 @@ import { File } from '@ionic-native/file';
 export class Tab1Page {
 
   constructor(
-    public navCtrl: NavController, 
-    public navParams: NavParams, 
+    public navCtrl: NavController,
+    public navParams: NavParams,
     private loginService: LoginServiceProvider,
     private media: Media,
     private file: File,
-    public platform: Platform) {
+    public platform: Platform,
+    public app: App) {
   }
   recording: boolean = false;
   filePath: string;
@@ -80,13 +82,12 @@ export class Tab1Page {
     this.audio.setVolume(0.8);
   }
 
-  
+
 
   public logout() {
     this.loginService.logout()
     if(this.loginService.logout()){
-      this.navCtrl.setRoot('LoginPage')
-    }
+      this.app.getRootNavs()[0].setRoot(LoginPage);    }
   }
 
 }
