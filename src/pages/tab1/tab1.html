@@ -12,8 +12,9 @@
 </ion-header>
  
 <ion-content padding>
+  
   <div class="container">
-    <input type="checkbox" id="btn" (click)='changeCheckbox()'/>
+    <input type="checkbox" [disabled]='checkbox'id="btn" (click)='changeCheckbox()' [(ngModel)]='checkbox'/>
     <label for="btn"></label>
     <div class="time">
       <div class="h_m"></div>

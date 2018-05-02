@@ -1,6 +1,9 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { MediaObject } from '@ionic-native/media';
+import { RecordServiceProvider } from './../../providers/record-service/record-service';
+import { Component, Injectable } from '@angular/core';
+import { IonicPage, NavController, NavParams, App, Platform } from 'ionic-angular';
+import { MediaObject, Media } from '@ionic-native/media';
+import { LoginServiceProvider } from '../../providers/login-service/login-service';
+import { LoginPage } from '../login/login';
 
 /**
  * Generated class for the Tab2Page page.
@@ -8,7 +11,7 @@ import { MediaObject } from '@ionic-native/media';
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-
+@Injectable()
 @IonicPage()
 @Component({
   selector: 'page-tab2',
@@ -16,22 +19,31 @@ import { MediaObject } from '@ionic-native/media';
 })
 export class Tab2Page {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    private loginService: LoginServiceProvider,
+    private recordService: RecordServiceProvider,
+    public app: App) {
+  }
+  audioList: any[] = [];
+  ionViewDidLoad() {
+    this.audioList = this.recordService.getAudioList();
+  }
+  
+  playAudio(filename, i){
+    this.recordService.playAudio(filename,i)
+  }
+  public logout() {
+    this.loginService.logout()
+    if(this.loginService.logout()){
+      this.app.getRootNavs()[0].setRoot(LoginPage);    }
   }
 
-  ionViewDidLoad() {
-    this.getAudioList();
-  }
-  recording: boolean = false;
-  filePath: string;
-  fileName: string;
-  audio: MediaObject;
-  audioList: any[] = [];
-  public getAudioList() {
-    if(localStorage.getItem("audiolist")) {
-      this.audioList = JSON.parse(localStorage.getItem("audiolist"));
-      console.log(this.audioList);
-    }
+  public removerAudio(filename,i){
+      this.recordService.removeAudio(filename,i)
+      this.audioList = this.recordService.getAudioList()
   }
 
 }

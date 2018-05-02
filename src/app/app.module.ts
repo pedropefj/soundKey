@@ -10,6 +10,7 @@ import { LoginServiceProvider } from '../providers/login-service/login-service';
 
 import { Media } from '@ionic-native/media';
 import { File } from '@ionic-native/file';
+import { RecordServiceProvider } from '../providers/record-service/record-service';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { File } from '@ionic-native/file';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     LoginServiceProvider,
     Media,
-    File
+    File,
+    RecordServiceProvider
   ]
 })
 export class AppModule {}

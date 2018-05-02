@@ -1,9 +1,12 @@
+import { RecordServiceProvider } from './../../providers/record-service/record-service';
 import { LoginServiceProvider } from './../../providers/login-service/login-service';
-import { Component } from '@angular/core';
+import { Component, Injectable } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform, App } from 'ionic-angular';
 import { Media, MediaObject } from '@ionic-native/media';
 import { File } from '@ionic-native/file';
 import { LoginPage } from '../login/login';
+import {timer} from 'rxjs/observable/timer'
+@Injectable()
 @IonicPage()
 @Component({
   selector: 'page-tab1',
@@ -15,40 +18,32 @@ export class Tab1Page {
     public navCtrl: NavController,
     public navParams: NavParams,
     private loginService: LoginServiceProvider,
-    private media: Media,
-    private file: File,
-    public platform: Platform,
+    private recordeService: RecordServiceProvider,
     public app: App) {
   }
-  recording: boolean = false;
+  /*recording: boolean = false;
   filePath: string;
   fileName: string;
   audio: MediaObject;
-  audioList: any[] = [];
+  audioList: any[] = [];*/
   checkbox: boolean = false
 
-
-  public getAudioList() {
-    if(localStorage.getItem("audiolist")) {
-      this.audioList = JSON.parse(localStorage.getItem("audiolist"));
-      console.log(this.audioList);
-    }
-  }
-
   ionViewWillEnter() {
-    this.getAudioList();
     console.log(this.checkbox)
   }
 
   public changeCheckbox(){
-    this.checkbox = this.checkbox ? false : true
-    if(this.checkbox == true){
-      this.startRecord()
-    }else{
-      this.stopRecord()
-    }
+    
+    
+      this.recordeService.startRecord()
+      timer(5000).subscribe(() => {
+        this.recordeService.stopRecord()
+        this.checkbox = false
+      })
+
+    
   }
-  public startRecord() {
+  /*public startRecord() {
     if (this.platform.is('ios')) {
       this.fileName = 'record'+new Date().getDate()+new Date().getMonth()+new Date().getFullYear()+new Date().getHours()+new Date().getMinutes()+new Date().getSeconds()+'.3gp';
       this.filePath = this.file.documentsDirectory.replace(/file:\/\//g, '') + this.fileName;
@@ -80,7 +75,7 @@ export class Tab1Page {
     }
     this.audio.play();
     this.audio.setVolume(0.8);
-  }
+  }*/
 
 
 

@@ -1,11 +1,13 @@
 <ion-header>
-  <ion-navbar>
-    <ion-buttons start>
-      <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
+  <ion-navbar color="dark">
+    <ion-title>
+      Member Area
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="logout()">
+        <ion-icon name="log-out"></ion-icon>
+      </button>
     </ion-buttons>
-    <ion-title>Tabs2</ion-title>
   </ion-navbar>
 </ion-header>
  
@@ -14,6 +16,7 @@
     <ion-item *ngFor="let audio of audioList; index as i;">
       <p>{{audio.filename}}</p>
       <button ion-button clear item-end large (click)="playAudio(audio.filename, i)"><ion-icon name="play"></ion-icon></button>
+      <button ion-button clear item-end large (click)="removerAudio(audio.filename, i)"><ion-icon name="trash"></ion-icon></button>
     </ion-item>
   </ion-list>
 </ion-content>
