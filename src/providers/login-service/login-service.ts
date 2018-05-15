@@ -13,14 +13,14 @@ export class LoginServiceProvider {
   }
   login(email:string, password:string):Observable<User>{
     var data =  {
-                  "email":`${email}`,
-                  "password":`${password}`
+                  "login":`${email}`,
+                  "senha":`${password}`
                 }
     var headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8')
     var options = {
       headers: headers
     };
-    return this.http.post<User>(`${API}/users/authenticate`,data,options)
+    return this.http.post<User>(`${API}/logar`,data,options)
         .do(user=>this.user = user)
  }
 
@@ -28,4 +28,9 @@ export class LoginServiceProvider {
   this.user = undefined
   return true
 }
+
+isLoggedIn(): boolean{
+  return this.user !== undefined
+}
+
 }

@@ -1,5 +1,6 @@
 export class User {
-    name: string;
-    email: string;
-    accessToken:string;
+    usenome: string;
+    uselogin: string;
+    usetoken:string;
+    usetokenexpire:string;
   }

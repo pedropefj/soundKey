@@ -1,5 +1,5 @@
 import { Component, Injectable } from '@angular/core';
-import { NavController, AlertController, LoadingController, Loading, IonicPage } from 'ionic-angular';
+import { NavController, AlertController, LoadingController, Loading, IonicPage, ToastController } from 'ionic-angular';
 import { LoginServiceProvider } from '../../providers/login-service/login-service';
 
 @IonicPage()
@@ -10,9 +10,13 @@ import { LoginServiceProvider } from '../../providers/login-service/login-servic
 })
 export class LoginPage {
   loading: Loading;
-  registerCredentials = { email: '', password: '' };
+  loginCredentials = { email: '', password: '' };
  
-  constructor(private nav: NavController, private alertCtrl: AlertController, private loadingCtrl: LoadingController,private loginService :LoginServiceProvider) { }
+  constructor(private nav: NavController, 
+     private alertCtrl: AlertController,
+     private loadingCtrl: LoadingController,
+     private loginService :LoginServiceProvider,
+     public toastCtrl: ToastController) { }
  
   public createAccount() {
     this.nav.push('ResgisterPage');
@@ -21,19 +25,38 @@ export class LoginPage {
   public login() {
     this.showLoading()
 
-   this.loginService.login(this.registerCredentials.email,this.registerCredentials.password)
-        .subscribe(result => {
-          if (result) {        
-            this.nav.setRoot('TabsPage');
-          } else {
-            this.showError("Access Denied");
-          }
-        }),error => {
-          this.showError(error);
+   this.loginService.login(this.loginCredentials.email,this.loginCredentials.password)
+        .subscribe(() =>
+        {this.showToast('bottom')},
+        response => {this.showAlert(), this.loading.dismiss()},
+        ()=>{
+          // if(this.navigateTo!=""){
+           this.nav.setRoot('TabsPage');
+          //}else{
+            // this.router.navigate(['/acessos'])
+          //}
         }
-        this.nav.setRoot('TabsPage');
+      )
+        
 
 
+  }
+  showToast(position: string) {
+    let toast = this.toastCtrl.create({
+      message: `Bem vindo, ${this.loginService.user.usenome}`,
+      duration: 2000,
+      position: position
+    });
+
+    toast.present(toast);
+  }
+  showAlert() {
+    let alert = this.alertCtrl.create({
+      title: 'Erro de autenticação!',
+      subTitle: 'Senha ou e-mail invalidos!',
+      buttons: ['OK']
+    });
+    alert.present();
   }
  
   showLoading() {

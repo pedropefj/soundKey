@@ -4,6 +4,7 @@ import { IonicPage, NavController, NavParams, App, Platform } from 'ionic-angula
 import { MediaObject, Media } from '@ionic-native/media';
 import { LoginServiceProvider } from '../../providers/login-service/login-service';
 import { LoginPage } from '../login/login';
+import { timer } from 'rxjs/observable/timer';
 
 /**
  * Generated class for the Tab2Page page.
@@ -18,7 +19,7 @@ import { LoginPage } from '../login/login';
   templateUrl: 'tab2.html',
 })
 export class Tab2Page {
-
+  checkbox: boolean = false
 
   constructor(
     public navCtrl: NavController,
@@ -45,5 +46,17 @@ export class Tab2Page {
       this.recordService.removeAudio(filename,i)
       this.audioList = this.recordService.getAudioList()
   }
+
+  public changeCheckbox(){
+    
+    
+    this.recordService.startRecord()
+    timer(5000).subscribe(() => {
+      this.recordService.stopRecord()
+      this.checkbox = false
+    })
+
+  
+}
 
 }

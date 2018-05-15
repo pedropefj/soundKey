@@ -12,6 +12,14 @@
 </ion-header>
  
 <ion-content padding>
+    <div class="container">
+        <input type="checkbox" [disabled]='checkbox'id="btn" (click)='changeCheckbox()' [(ngModel)]='checkbox'/>
+        <label for="btn"></label>
+        <div class="time">
+          <div class="h_m"></div>
+          <div class="s_ms"></div>
+        </div>
+      </div>
   <ion-list>
     <ion-item *ngFor="let audio of audioList; index as i;">
       <p>{{audio.filename}}</p>

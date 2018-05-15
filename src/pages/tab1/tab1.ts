@@ -17,7 +17,7 @@ export class Tab1Page {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private loginService: LoginServiceProvider,
+    public loginService: LoginServiceProvider,
     private recordeService: RecordServiceProvider,
     public app: App) {
   }
