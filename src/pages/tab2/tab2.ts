@@ -32,7 +32,7 @@ export class Tab2Page {
   ionViewDidLoad() {
     this.audioList = this.recordService.getAudioList();
   }
-  
+
   playAudio(filename, i){
     this.recordService.playAudio(filename,i)
   }
@@ -48,15 +48,13 @@ export class Tab2Page {
   }
 
   public changeCheckbox(){
-    
-    
-    this.recordService.startRecord()
+
+
+    this.recordService.startRecordBase()
     timer(5000).subscribe(() => {
-      this.recordService.stopRecord()
+      this.recordService.stopRecordBase()
       this.checkbox = false
     })
-
-  
 }
 
 }

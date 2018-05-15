@@ -44,6 +44,72 @@ export class RecordServiceProvider {
     this.audio.startRecord();
     this.recording = true;
   }
+
+
+  public startRecordBase() {
+    if (this.platform.is('ios')) {
+      this.fileName = 'record' + new Date().getDate() + new Date().getMonth() + new Date().getFullYear() + new Date().getHours() + new Date().getMinutes() + new Date().getSeconds() + '.3gp';
+      this.filePath = this.file.documentsDirectory.replace(/file:\/\//g, '') + this.fileName;
+      this.audio = this.media.create(this.filePath);
+    } else if (this.platform.is('android')) {
+      this.fileName = 'record' + new Date().getDate() + new Date().getMonth() + new Date().getFullYear() + new Date().getHours() + new Date().getMinutes() + new Date().getSeconds() + '.3gp';
+      this.filePath = this.file.externalDataDirectory.replace(/file:\/\//g, '') + this.fileName;
+      this.audio = this.media.create(this.filePath);
+    }
+    this.audio.startRecord();
+    this.recording = true;
+  }
+
+  public stopRecordBase() {
+    this.audio.stopRecord();
+    let data = { filename: this.fileName };
+    this.audioList.push(data);
+    localStorage.setItem("audiolist", JSON.stringify(this.audioList));
+    this.recording = false;
+
+    if (this.platform.is('ios')) {
+      this.filePath = this.file.documentsDirectory.replace(/file:\/\//g, '') + data.filename;
+      this.audio = this.media.create(this.filePath);
+    } else if (this.platform.is('android')) {
+      this.filePath = this.file.externalDataDirectory.replace(/file:\/\//g, '') + data.filename;
+      this.audio = this.media.create(this.filePath);
+    }
+
+    let option: FileUploadOptions = {
+      fileKey: 'audiofile',
+      mimeType: 'audio/3gp',
+      httpMethod: 'POST',
+      fileName: this.fileName,
+      headers	: {'accessToken':`${this.loginService.user.usetoken}`}
+    }
+    console.log(this.loginService.user.usetoken)
+    const fileTransfer: FileTransferObject = this.transfer.create();
+
+
+    fileTransfer.upload(this.filePath, `${API}/uploadAudio`, option)
+    .then((data) => {
+      console.log(data)
+      // success
+    }, (err) => {
+      console.log(err)
+    })
+    /* .then((result) => {
+
+      this.sendAudio(name);
+      this.recStart = false;
+
+    }
+    ).catch(error => {
+      console.log('uploaderror');
+      console.log(error.message);
+      this.recStart = false;
+    });*/
+
+
+
+  }
+
+
   public getAudioList() {
     if (localStorage.getItem("audiolist")) {
       this.audioList = JSON.parse(localStorage.getItem("audiolist"));
